@@ -11,10 +11,14 @@
       <!-- Sidebar user panel (optional) -->
       <div class="user-panel mt-3 pb-3 mb-3 d-flex">
         <div class="image">
-          <img src="{{ url('admin/images/user2-160x160.jpg')}}" class="img-circle elevation-2" alt="User Image">
+          @if(!empty(Auth::guard('admin')->user()->image))
+            <img src="{{ url('admin/images/photos/'.Auth::guard('admin')->user()->image)}}" class="img-circle elevation-2" alt="User Image">
+          @else
+            <img src="{{ url('admin/images/dummy_image.jpeg')}}" class="img-circle elevation-2" alt="User Image">
+          @endif
         </div>
         <div class="info">
-          <a href="#" class="d-block">Ecommerce Project</a>
+          <a href="#" class="d-block">{{ Auth::guard('admin')->user()->name}}</a>
         </div>
       </div>
 
@@ -35,8 +39,26 @@
         <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
           <!-- Add icons to the links using the .nav-icon class
                with font-awesome or any other icon font library -->
+          @if(Session::get('page')=="dashboard")
+             @php $active = "active" @endphp
+             @else
+             @php $active = "" @endphp
+          @endif
+          <li class="nav-item">
+            <a href="{{ route('dashboard')}}" class="nav-link {{ $active}}">
+              <i class="nav-icon fas fa-th"></i>
+              <p>
+                Dashboard
+              </p>
+            </a>
+          </li>
+          @if(Session::get('page') == "update-password" || Session::get('page')=="update-details")
+          @php $active="active" @endphp
+          @else 
+          @php $active="" @endphp
+          @endif
           <li class="nav-item menu-open">
-            <a href="{{ url('admin/dashboard')}}" class="nav-link active">
+            <a href="{{ url('admin/dashboard')}}" class="nav-link {{ $active}}">
               <i class="nav-icon fas fa-tachometer-alt"></i>
               <p>
                 Settings
@@ -44,29 +66,31 @@
               </p>
             </a>
             <ul class="nav nav-treeview">
+              @if(Session::get('page')=="update-password")
+              @php $active = "active" @endphp
+              @else
+              @php $active = "" @endphp
+               @endif
               <li class="nav-item">
-                <a href="{{ url('admin/update_password')}}" class="nav-link active">
+                <a href="{{ url('admin/update_password')}}" class="nav-link {{ $active}}">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Update Admin Password</p>
                 </a>
               </li>
+              @if(Session::get('page')=="update-details")
+                 @php $active="active" @endphp
+                 @else 
+                 @php $active="" @endphp
+              @endif
               <li class="nav-item">
-                <a href="{{ url('admin/dashboard')}}" class="nav-link">
+                <a href="{{ url('admin/update-admin-details')}}" class="nav-link {{ $active}}">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Update Admin Details</p>
                 </a>
               </li>
             </ul>
           </li>
-          <li class="nav-item">
-            <a href="pages/widgets.html" class="nav-link">
-              <i class="nav-icon fas fa-th"></i>
-              <p>
-                Widgets
-                <span class="right badge badge-danger">New</span>
-              </p>
-            </a>
-          </li>
+          
           <li class="nav-item">
             <a href="{{ url('admin/categories')}}" class="nav-link">
               <i class="nav-icon fas fa-th"></i>
@@ -77,7 +101,7 @@
             <a href="#" class="nav-link">
               <i class="nav-icon fas fa-copy"></i>
               <p>
-                Layout Options
+                CMS Pages
                 <i class="fas fa-angle-left right"></i>
                 <span class="badge badge-info right">6</span>
               </p>
