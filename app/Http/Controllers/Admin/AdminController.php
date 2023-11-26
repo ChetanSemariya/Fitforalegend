@@ -36,6 +36,16 @@ class AdminController extends Controller
 
             $this->validate($request, $rules, $customMessages);
             if(Auth::guard('admin')->attempt(['email' => $data['email'], 'password' => $data['password']])){
+
+                //  Remember Admin Email and password with Cookiess
+                if(isset($data['remember']) &&!empty($data['remember'])){
+                    setcookie("email",$data['email'], time()+3600);
+                    // cookie set for one hour
+                    setcookie("password",$data['password'],time()+3600);
+                }else{
+                    setcookie("email", "");
+                    setcookie("password","");
+                }
                 return redirect('admin/dashboard');
             }else{
                 return redirect()->back()->with("error_message", "Invalid email or password");
@@ -128,5 +138,80 @@ class AdminController extends Controller
             return redirect()->back()->with('success_message', 'Admin Details has been updated Successfully!');
         }
         return view('admin.update_details');
+    }
+
+    public function subadmins()
+    {
+        Session::put('page', 'subadmins');
+        $subadmins = Admin::where('type','subadmin')->get();
+        return view('admin.subadmins.subadmins')->with(compact('subadmins'));
+    }
+
+    public function updateSubadminStatus(Request $request)
+    {
+        if($request->ajax()){
+            $data = $request->all();
+            // echo "<pre>"; print_r($data); die;
+            if($data['status']=="Active"){
+                $status = 0;
+            }else{
+                $status = 1;
+            }
+            Admin::where('id',$data['subadmin_id'])->update(['status'=> $status]);
+            return response()->json(['status'=>$status, 'subadmin'=> $data['subadmin_id']]);
+        }   
+    }
+
+    public function addEditSubadmin(Request $request, $id="")
+    {
+        // if($request->isMethod('post')){
+            Session::put('page', 'subadmins'); 
+            // return "hello";
+            if($id==""){
+                $title = "Add Subadmin";
+                $subadmin= new Admin;
+                $message = "Subadmin Added Successfully";
+            }else{
+                $title = "Edit CMS Page";
+                $subadmin = Admin::find($id);
+                $message = "CMS Page Updated Successfully";
+            }
+            
+            if($request->isMethod('post')){
+                $data = $request->all();
+                echo "<pre>"; print_r($data); die;
+
+                $rules = [
+                    'name' => 'required',
+                    'email' => 'required',
+                    'mobile' => 'required',
+                ];
+                $customMessages = [
+                    'name.required' => 'Name is required',
+                    'email.required' => 'Email is required',
+                    'email.email' => 'Valid Email is required',
+                    'unique.required' => 'Unique Email is required',
+                    'mobile.required' => 'Mobile is required',
+                ];
+
+                $this->validate($request, $rules, $customMessages);
+
+                $subadmin->name = $data['name'];
+                $subadmin->email = $data['email'];
+                $subadmin->mobile = $data['mobile'];
+                $subadmin->password = Hash::make($data['password']);
+                $subadmin->status = 1;
+                $subadmin->save();
+                return redirect('admin/subadmins')->with('success_message', $message);
+            }
+            return view('admin.subadmins.add_edit_subadmin')->with(compact('title','subadmin'));
+            // return view('admin.pages.add_edit_subadmin');
+    }
+
+    public function deleteSubadmin($id)
+    {
+        // Delete Subadmin
+        Admin::where('id', $id)->delete();
+        return redirect()->back()->with('success_message', 'Subadmin Deleted Successfully!');
     }
 }

@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Admin\AdminController;
 use App\Http\Controllers\Admin\CategoryController;
+use App\Http\Controllers\Admin\CmsController;
 use App\Http\Controllers\front\DashboardController;
 
 /*
@@ -30,6 +31,18 @@ Route::prefix('/admin')->namespace('App\Http\Controllers\Admin')->group(function
         Route::match(['get','post'], '/update-admin-details', [AdminController::class, 'updateAdminDetails']);
         Route::match(['get','post'], '/check_current_password', [AdminController::class, 'check_current_password']);
 
+        // Subadmins Routes
+        Route::get('subadmins',[AdminController::class, 'subadmins']);
+        Route::post('update-subadmin-status', [AdminController::class, 'updateSubadminStatus']);
+        Route::match(['get','post'], '/add-edit-subadmin/{id?}', [AdminController::class, 'addEditSubadmin']);
+        Route::get('delete-subadmin/{id?}', [AdminController::class, 'deleteSubadmin']);
+
+        // Display Cms Pages 
+        Route::get('cms-pages', [CmsController::class, 'index']);
+        // dd('hello');
+        Route::post('update-cms-pages-status', [CmsController::class, 'update']);
+        Route::match(['get','post'], '/add-edit-cms-page/{id?}', [CmsController::class, 'edit']);
+        Route::get('delete-cms-page/{id}', [CmsController::class, 'destroy']);
 
         // Categories
         Route::match(['get', 'post'], '/categories', [CategoryController::class, 'index'])->name('admin.categories');

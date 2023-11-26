@@ -18,6 +18,10 @@
   <link rel="stylesheet" href="{{ url('admin/plugins/datatables-bs4/css/dataTables.bootstrap4.min.css')}}">
   <link rel="stylesheet" href="{{ url('admin/plugins/datatables-responsive/css/responsive.bootstrap4.min.css')}}">
   <link rel="stylesheet" href="{{ url('admin/plugins/datatables-buttons/css/buttons.bootstrap4.min.css')}}">
+
+   <!-- Select2 -->
+   <link rel="stylesheet" href="{{ url('admin/plugins/select2/css/select2.min.css')}}">
+   <link rel="stylesheet" href="{{ url('admin/plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css')}}">
 </head>
 <body class="hold-transition dark-mode sidebar-mini layout-fixed layout-navbar-fixed layout-footer-fixed">
 <div class="wrapper">
@@ -52,6 +56,9 @@
 <!-- AdminLTE App -->
 <script src="{{ url('admin/js/adminlte.js') }}"></script>
 
+<!-- Select2 -->
+<script src="{{ url('admin/plugins/select2/js/select2.full.min.js')}}"></script>
+
 <!-- PAGE PLUGINS -->
 <!-- jQuery Mapael -->
 <script src="{{ url('admin/plugins/jquery-mousewheel/jquery.mousewheel.js') }}"></script>
@@ -74,22 +81,19 @@
 <!-- Custom js files  -->
 <script src="{{ url('admin/js/custom.js') }}"></script>
 
+<!-- Sweet Alert library -->
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
 <script>
   $(function () {
-    $("#example1").DataTable({
-      "responsive": true, "lengthChange": false, "autoWidth": false,
-      "buttons": ["copy", "csv", "excel", "pdf", "print", "colvis"]
-    }).buttons().container().appendTo('#example1_wrapper .col-md-6:eq(0)');
-    $('#categories').DataTable({
-      "paging": true,
-      "lengthChange": false,
-      "searching": false,
-      "ordering": true,
-      "info": true,
-      "autoWidth": false,
-      "responsive": true,
-    });
+    $("#cmspages").DataTable();
+    $('#categories').DataTable();
+    $('#subadmins').DataTable();
+
   });
+</script>
+<script>
+    $('.select2').select2();
 </script>
 </body>
 </html>

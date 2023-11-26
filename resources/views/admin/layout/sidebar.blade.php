@@ -97,13 +97,34 @@
                 Categories
             </a>
           </li>
+          @if(Session::get('page')=="subadmins")
+          @php $active = "active" @endphp
+          @else
+          @php $active = "" @endphp
+          @endif
           <li class="nav-item">
-            <a href="#" class="nav-link">
+            <a href="{{ url('admin/subadmins')}}" class="nav-link {{ $active}}">
+              <i class="nav-icon fas fa-users"></i>
+              Subadmins
+            </a>
+          </li>
+          @if(Session::get('page')=="cms-pages")
+          @php $active = "active" @endphp
+          @else
+          @php $active = "" @endphp
+          @endif
+          <li class="nav-item">
+            <a href="{{ url('admin/cms-pages')}}" class="nav-link {{ $active}}">
+              <i class="nav-icon fas fa-copy"></i>
+              CMS Pages
+            </a>
+          </li>
+          {{-- <li class="nav-item">
+            <a href="{{ url('admin/cms-pages')}}" class="nav-link">
               <i class="nav-icon fas fa-copy"></i>
               <p>
                 CMS Pages
-                <i class="fas fa-angle-left right"></i>
-                <span class="badge badge-info right">6</span>
+              
               </p>
             </a>
             <ul class="nav nav-treeview">
@@ -156,7 +177,7 @@
                 </a>
               </li>
             </ul>
-          </li>
+          </li> --}}
         </ul>
       </nav>
       <!-- /.sidebar-menu -->
