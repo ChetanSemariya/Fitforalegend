@@ -48,33 +48,20 @@
                           </button>
                       </div>  
                     @endif
-                      <form name="subadminForm" id="subadminForm" @if(empty($subadmin['id'])) action="{{ url('admin/add-edit-subadmin')}}" @else action="{{ url('admin/add-edit-subadmin/'.$subadmin['id'])}}" @endif method="POST" enctype="multipart/form-data">
+                      <form name="subadminForm" id="subadminForm" action="{{ url('admin/update-role/'.$id)}}" method="POST" enctype="multipart/form-data">
                       @csrf
+                      <input type="hidden" name="subadmin_id" value="{{ $id }}">
                       <div class="card-body">
-                        <div class="form-group col-md-6">
+                        {{-- <div class="form-group col-md-6">
                             <label for="email">Email*</label>
-                            <input @if($subadmin['id'] !="") disabled="" style="background-color: #666666" @endif type="email" name="email" id="email" class="form-control" placeholder="Enter Subadmin email" @if(!empty($subadmin['email'])) value="{{ $subadmin['email']}}" value="{{ old('email') }}" @endif>
-                        </div>
+                            <input disabled="" style="background-color: #666666" value="{{ $subadmin['email']}}">
+                        </div> --}}
                         <div class="form-group col-md-6">
-                            <label for="mobile">Password</label>
-                            <input type="password" name="password" id="password" class="form-control" placeholder="Enter Password" @if(!empty($subadmin['password'])) value="{{ $subadmin['password']}}" @endif>
+                            <label for="mobile">CMS Pages: &nbsp;&nbsp;</label>
+                            <input type="checkbox" name="cms_pages['view']" value="1">&nbsp;&nbsp; View Access &nbsp;&nbsp;&nbsp;&nbsp;
+                            <input type="checkbox" name="cms_pages['edit']" value="1">&nbsp;&nbsp; View/Edit Access &nbsp;&nbsp;&nbsp;&nbsp;
+                            <input type="checkbox" name="cms_pages['full']" value="1">&nbsp;&nbsp; Full Access &nbsp;&nbsp;&nbsp;&nbsp;
                         </div>
-                          <div class="form-group col-md-6">
-                              <label for="name">Name*</label>
-                              <input type="text" name="name" id="name" class="form-control" placeholder="Enter Subadmin name" @if(!empty($subadmin['name'])) value="{{ $subadmin['name']}}" @else value="{{ old('name') }}" @endif>
-                          </div>
-                          <div class="form-group col-md-6">
-                              <label for="mobile">Mobile</label>
-                              <input type="number" name="mobile" id="mobile" class="form-control" placeholder="Enter Mobile number" @if(!empty($subadmin['mobile'])) value="{{ $subadmin['mobile']}}" @endif>
-                          </div>
-                          <div class="form-group col-md-6">
-                            <label for="image">Photo</label>
-                            <input type="file" class="form-control" name="image" id="image">
-                            @if(!empty($subadmin['image']))
-                            <a target="_blank" href="{{ url('admin/images/photos/'.$subadmin['image'])}}">View Photo</a>
-                            <input type="hidden" name="current_image" value="{{ $subadmin['image'] }}">
-                            @endif
-                          </div>
                       </div>
                       <!-- /.card-body -->
                       <div class="card-footer">

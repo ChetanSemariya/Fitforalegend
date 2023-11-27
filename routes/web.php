@@ -35,7 +35,8 @@ Route::prefix('/admin')->namespace('App\Http\Controllers\Admin')->group(function
         Route::get('subadmins',[AdminController::class, 'subadmins']);
         Route::post('update-subadmin-status', [AdminController::class, 'updateSubadminStatus']);
         Route::match(['get','post'], '/add-edit-subadmin/{id?}', [AdminController::class, 'addEditSubadmin']);
-        Route::get('delete-subadmin/{id?}', [AdminController::class, 'deleteSubadmin']);
+        Route::match(['get','post'], '/add-edit-subadmin/{id?}', [AdminController::class, 'addEditSubadmin']);
+        Route::match(['get', 'post'], '/update-role/{id?}', [AdminController::class, 'updateRole']);
 
         // Display Cms Pages 
         Route::get('cms-pages', [CmsController::class, 'index']);

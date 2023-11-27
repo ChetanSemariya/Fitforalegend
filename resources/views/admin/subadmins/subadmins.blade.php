@@ -70,8 +70,9 @@
                     </a>
                     @endif
                     &nbsp;&nbsp;
-                    {{-- <a href="{{ url('admin/add-edit-cms-page/'.$subadmin->id)}}"><i class="fas fa-edit" style='color:#3f6ed3'></i></a>&nbsp;&nbsp; --}}
-                    <a class="confirmDelete" <?php /* href="{{ url('admin/delete-subadmin/'.$page['id'])}}" */ ?> name="Subadmin" href="javascript:void(0)" record="subadmin" recordid="{{ $subadmin->id }}" title="Delete Subadmin"><i class="fas fa-trash" style='color:#3f6ed3'></i></a>
+                    <a title="Edit Subadmin" href="{{ url('admin/add-edit-subadmin/'.$subadmin->id)}}"><i class="fas fa-edit" style='color:#3f6ed3'></i></a>&nbsp;&nbsp;
+                    <a class="confirmDelete" <?php /* href="{{ url('admin/delete-subadmin/'.$page['id'])}}" */ ?> name="Subadmin" href="javascript:void(0)" record="subadmin" recordid="{{ $subadmin->id }}" title="Delete Subadmin"><i class="fas fa-trash" style='color:#3f6ed3'></i></a>&nbsp;&nbsp;
+                    <a title="Admin roles" href="{{ url('admin/update-role/'.$subadmin->id)}}"><i class="fas fa-unlock" style='color:#3f6ed3'></i></a>
                 </td>
                 </tr>
                 @endforeach
