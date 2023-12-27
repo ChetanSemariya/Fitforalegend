@@ -1,18 +1,18 @@
 @extends('admin.layout.layout')
 @section('content')
-<!-- Content Wrapper. Contains page content -->
+<!-- Content Wrapper. Contains Category content -->
 <div class="content-wrapper">
-  <!-- Content Header (Page header) -->
+  <!-- Content Header (Category header) -->
   <div class="content-header">
     <div class="container-fluid">
       <div class="row mb-2">
         <div class="col-sm-6">
-          <h1 class="m-0">CMS Pages</h1>
+          <h1 class="m-0">Categories</h1>
         </div><!-- /.col -->
         <div class="col-sm-6">
           <ol class="breadcrumb float-sm-right">
             <li class="breadcrumb-item"><a href="#">Home</a></li>
-            <li class="breadcrumb-item active">CMS Pages</li>
+            <li class="breadcrumb-item active">Categories</li>
           </ol>
         </div><!-- /.col -->
       </div><!-- /.row -->
@@ -35,45 +35,45 @@
         @endif
           <div class="card">
             <div class="card-header">
-              <h3 class="card-title">CMS Pages</h3>
-              <a style="max-width:150px; float:right; display:inline-block;" class="btn btn-block btn-primary" href="{{ url('admin/add-edit-cms-page')}}">Add CMS Page</a>
+              <h3 class="card-title">Categories</h3>
+              <a style="max-width:150px; float:right; display:inline-block;" class="btn btn-block btn-primary" href="{{ url('admin/add-edit-category')}}">Add Categories</a>
             </div>
             <!-- /.card-header -->
             <div class="card-body">
-              <table id="cmspages" class="table table-bordered table-striped">
+              <table id="categories" class="table table-bordered table-striped">
                 <thead>
                 <tr>
                   <th>ID</th>
-                  <th>Title</th>
+                  <th>Name</th>
+                  <th>Parent Category</th>
                   <th>URL</th>
                   <th>Created on</th>
                   <th>Actions</th>
                 </tr>
                 </thead>
                 <tbody>
-                @foreach($CmsPages as $page)
+                @foreach($categories as $category)
                 <tr>
-                  <td>{{ $page['id']}}</td>
-                  <td>{{ $page['title']}}</td>
-                  <td>{{ $page['url']}}</td>
-                  <td>{{ date("F j, Y, g:i a", strtotime($page['created_at']));}}</td>
+                  <td>{{ $category['id']}}</td>
+                  <td>{{ $category['category_name']}}</td>
                   <td>
-                    @if($pagesModule['edit_access'] ==1 || $pagesModule['full_access'] ==1) 
-                      @if($page['status'] ==1)
-                      <a class="updateCmsPageStatus" id="page-{{ $page['id']}}" page_id="{{ $page['id'] }}" href="javascript:;void(0)" style='color:#3f6ed3'><i class="fas fa-toggle-on" status="Active"></i>
+                    @if(isset($category['parentcategory']['category_name']))
+                    {{ $category['parentcategory']['category_name'] }}
+                    @endif
+                  </td>
+                  <td>{{ $category['url']}}</td>
+                  <td>{{ date("F j, Y, g:i a", strtotime($category['created_at']));}}</td>
+                  <td>
+                      @if($category['status'] ==1)
+                      <a class="updateCategoryStatus" id="category-{{ $category['id']}}" category_id="{{ $category['id'] }}" href="javascript:;void(0)" style='color:#3f6ed3'><i class="fas fa-toggle-on" status="Active"></i>
                       </a>
                       @else
-                      <a class="updateCmsPageStatus" id="page-{{ $page['id']}}" page_id="{{ $page['id']}}" style="color:gray" href="javascript:;void(0)"><i class="fas fa-toggle-off" status="Inactive"></i>
+                      <a class="updateCategoryStatus" id="category-{{ $category['id']}}" category_id="{{ $category['id']}}" style="color:gray" href="javascript:;void(0)"><i class="fas fa-toggle-off" status="Inactive"></i>
                       </a>
                       @endif
                       &nbsp;&nbsp;
-                    @endif
-                    @if($pagesModule['edit_access'] ==1 || $pagesModule['full_access'] ==1 )
-                      <a href="{{ url('admin/add-edit-cms-page/'.$page['id'])}}"><i class="fas fa-edit"  style='color:#3f6ed3'></i></a>&nbsp;&nbsp;
-                    @endif
-                    @if($pagesModule['full_access'] ==1)
-                     <a class="confirmDelete" <?php /* href="{{ url('admin/delete-cms-page/'.$page['id'])}}" */ ?> name="CMS Page" href="javascript:void(0)" record="cms-page" recordid="{{ $page['id'] }}" title="Delete CMS Page"><i class="fas fa-trash" style='color:#3f6ed3'></i></a>
-                    @endif
+                    {{-- <a href="{{ url('admin/add-edit-cms-Category/'.$category['id'])}}"><i class="fas fa-edit"  style='color:#3f6ed3'></i></a>&nbsp;&nbsp; --}}
+                     <a class="confirmDelete" href="javascript:void(0)" record="category" recordid="{{ $category['id'] }}" title="Delete Category"><i class="fas fa-trash" style='color:#3f6ed3'></i></a>
                 </td>
                 </tr>
                 @endforeach
@@ -93,5 +93,4 @@
   <!-- /.content -->
 </div>
 <!-- /.content-wrapper -->
-
 @endsection  

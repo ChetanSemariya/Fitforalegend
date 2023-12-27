@@ -9,104 +9,102 @@ use Illuminate\Pagination\Paginator;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
+use Image;
 use DB;
 
 class CategoryController extends Controller
 {
-    public function index(Request $request)
+    public function categories()
     {
-        // $common = [];
-        // $common['title'] = 'Categories';
-        // Session::put('TopMenu', 'Categories');
-        // Session::put('SubMenu', 'Categories');
-        // $get_categories_arr = [];
-
-        $get_categories = Category::whereNull('is_delete')
-            ->orderby('id', 'asc')
-            ->get();
-
-        return view('admin.categories.index', compact('get_categories'));
+        Session::put('page', 'categories');
+        $categories = Category::with('parentcategory')->get();
+        // dd($categories->toArray());
+        return view('admin.categories.categories')->with(compact('categories'));
     }
 
-    public function addCategory(Request $request, $id = '')
+    public function updateCategoryStatus(Request $request)
     {
-        // $common = [];
-        // $common['title'] = 'Categories';
-        // $common['heding_title'] = 'Add Category';
-        // $common['button'] = 'Save';
-        // Session::put('TopMenu', 'Categories');
-        // Session::put('SubMenu', 'Categories');
-        // $get_parent_categories = Category::where('is_parent', 0)->where('status', 'Active')->get();
-        // $get_category = getTableColumn('categories');
-
-        if ($request->isMethod('post')) {
-            // $data = $request->input();
+        if($request->ajax()){
+            $data = $request->all();
             // echo "<pre>"; print_r($data); die;
-            // $req_fields = [];
-            // $req_fields['category_name'] = 'required';
-            // if ($request->id != '') {
-            //     $req_fields['image'] = 'mimes:jpeg,png,jpg,gif';
-            // } else {
-            //     $req_fields['image'] = 'required|mimes:jpeg,png,jpg,gif';
-            // }
-
-            // $validation = Validator::make(
-            //     $request->all(),
-            //     $req_fields,
-            //     [
-            //         'required' => 'The :attribute field is required.',
-            //     ],
-            // );
-
-            // if ($validation->fails()) {
-            //     return back()
-            //         ->withErrors($validation)
-            //         ->withInput();
-            // }
-
-            if ($request->id != '') {
-                $message = 'Update Successfully';
-                $status = 'success';
-                $Category = Category::find($request->id);
-            } else {
-                $message = 'Add Successfully';
-                $status = 'success';
-                $Category = new Category();
+            if($data['status']=="Active"){
+                $status = 0;
+            }else{
+                $status = 1;
             }
-            $Category->category_name = $request->category_name;
-            $Category->status = $request->status;
+            Category::where('id',$data['category_id'])->update(['status'=> $status]);
+            return response()->json(['status'=>$status, 'category_id'=> $data['category_id']]);
+        }
+    }
 
-            if ($request->hasFile('image')) {
-                $random_no = Str::random(5);
-                $img = $request->file('image');
-                $ext = $img->getClientOriginalExtension();
-                $new_name = time() . $random_no . '.' . $ext;
-                $destinationPath = public_path('uploads/category/');
-                $img->move($destinationPath, $new_name);
-                $Category->image = $new_name;
-            }
-            $Category->save();
-            return redirect()
-                ->route('admin.categories')
-                ->withErrors([$status => $message]);
+    // delete category
+    public function deleteCategory($id)
+    {
+        // return $id;
+        Category::where('id', $id)->delete();
+        return redirect()->back()->with('success_message', 'Category Deleted Successfully!');
+    }
+
+    public function addEditCategory(Request $request, $id=null)
+    {
+        if($id==""){
+            // Add Category
+            $title = "Add Category";
+            $category = new Category();
+            $message = "Category Added Successfully!";
+        }else{
+            // Edit Category
+            $title = "Edit Category";
+            $category = Category::find($id);
+            $message = "Category Updated Successfully!";
         }
 
-        // if ($id != '') {
-        //     if (checkDecrypt($id) == false) {
-        //         return redirect()
-        //             ->back()
-        //             ->withErrors(['error' => 'No Record Found']);
-        //     }
-        //     $id = checkDecrypt($id);
-        //     $common['heding_title'] = 'Edit Category';
-        //     $common['button'] = 'Update';
-        //     $get_category = Category::where('id', $id)->first();
+        if($request->isMethod('post')){
+            $data = $request->all();
+            // echo "<pre>"; print_r($data); die;
 
-        //     if (!$get_category) {
-        //         return back()->withErrors(['error' => 'Something went wrong']);
-        //     }
-        // }
+            $rules = [
+                'category_name' => 'required',
+                'url' => 'required|unique:categories',
+            ];
 
-        return view('admin.categories.addCategory');
+            $customMessages = [
+                'category_name.required' => 'Category name is required',
+                'url.required' => 'Category URL is required',
+                'url.unique' => 'Unique URL is required',
+            ];
+
+            $this->validate($request, $rules, $customMessages);
+
+            // Upload Admin Image
+            if($request->hasFile('category_image')){
+                $image_tmp = $request->file('category_image');
+                if($image_tmp->isValid()){
+                    // Get Image Extension
+                   $extension = $image_tmp->getClientOriginalExtension();
+                    // Generate new Image Name
+                    $imageName = rand(111,99999).'.'.$extension; 
+                    $image_path = 'front/images/categories/'.$imageName;
+                    // upload the category image
+                    Image::make($image_tmp)->save($image_path);
+                    $category->category_image = $imageName;
+                }
+            }
+            else{
+                $category->category_image = "";
+            }
+            
+            $category->category_name = $data['category_name'];
+            $category->category_discount = $data['category_discount'];
+            $category->url = $data['url'];
+            $category->description = $data['description'];
+            $category->meta_title = $data['meta_title'];
+            $category->meta_description = $data['meta_description'];
+            $category->meta_keywords = $data['meta_keywords'];
+            $category->status = 1;
+            $category->save();
+            return redirect('admin/categories')->with('success_message', $message);
+        }
+        return view('admin.categories.add_edit_category')->with(compact('title', 'category'));
     }
 }

@@ -6,7 +6,7 @@
       <div class="container-fluid">
           <div class="row mb-2">
               <div class="col-sm-6">
-                  <h1>{{ $title}}</h1>
+                  <h1>Sub Admin</h1>
               </div>
               <div class="col-sm-6">
                   <ol class="breadcrumb float-sm-right">
@@ -28,6 +28,13 @@
                   <div class="card card-primary">
                       <div class="card-header">
                           <h3 class="card-title">{{ $title}}</h3>
+                          <a href="{{ url('admin/subadmins')}}">
+                            <button onClick="back();"
+                                class="btn btn-primary waves-effect waves-light f-right d-inline-block md-trigger"
+                                data-modal="modal-13" style="float: right; background-color:gray; font-weight:bold"> <i class="ti-control-backward m-r-5"></i> Back
+                            </button>
+                        </a>
+                          
                       </div>
                       <!-- /.card-header -->
                       <!-- form start -->
@@ -40,27 +47,44 @@
                           </ul>
                       </div>
                       @endif
-                      @if(Session::has('error_message'))
-                      <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                          <strong>Success:</strong> {{ Session::get('error_message') }}
+                      @if(Session::has('success_message'))
+                      <div class="alert alert-success alert-dismissible fade show" role="alert">
+                          <strong>Success:</strong> {{ Session::get('success_message') }}
                           <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                           <span aria-hidden="true">&times;</span>
                           </button>
                       </div>  
                     @endif
-                      <form name="subadminForm" id="subadminForm" action="{{ url('admin/update-role/'.$id)}}" method="POST" enctype="multipart/form-data">
+                      <form name="subadminForm" id="subadminForm" action="{{ url('admin/update-role/'.$id)}}" method="post">
                       @csrf
                       <input type="hidden" name="subadmin_id" value="{{ $id }}">
+                      @if(!empty($subadminRoles))
+                      @foreach($subadminRoles as $role)
+                        @if($role['module'] =="cms_pages")
+                           @if($role['view_access'] == 1)
+                              @php $viewCMSPages = "checked" @endphp
+                              @else
+                              @php $viewCMSPages = "" @endphp
+                           @endif
+                           @if($role['edit_access'] == 1)
+                              @php $editCMSPages = "checked" @endphp
+                              @else
+                              @php $editCMSPages = "" @endphp
+                           @endif
+                           @if($role['full_access'] == 1)
+                              @php $fullCMSPages = "checked" @endphp
+                              @else
+                              @php $fullCMSPages = "" @endphp
+                           @endif
+                        @endif
+                      @endforeach
+                      @endif
                       <div class="card-body">
-                        {{-- <div class="form-group col-md-6">
-                            <label for="email">Email*</label>
-                            <input disabled="" style="background-color: #666666" value="{{ $subadmin['email']}}">
-                        </div> --}}
                         <div class="form-group col-md-6">
-                            <label for="mobile">CMS Pages: &nbsp;&nbsp;</label>
-                            <input type="checkbox" name="cms_pages['view']" value="1">&nbsp;&nbsp; View Access &nbsp;&nbsp;&nbsp;&nbsp;
-                            <input type="checkbox" name="cms_pages['edit']" value="1">&nbsp;&nbsp; View/Edit Access &nbsp;&nbsp;&nbsp;&nbsp;
-                            <input type="checkbox" name="cms_pages['full']" value="1">&nbsp;&nbsp; Full Access &nbsp;&nbsp;&nbsp;&nbsp;
+                            <label for="cms_pages">CMS Pages: &nbsp;&nbsp;&nbsp;</label>
+                            <input type="checkbox" name="cms_pages['view']" value="1" @if(isset($viewCMSPages)) {{$viewCMSPages}} @endif>&nbsp;&nbsp; View Access &nbsp;&nbsp;&nbsp;&nbsp;
+                            <input type="checkbox" name="cms_pages['edit']" value="1" @if(isset($editCMSPages)) {{$editCMSPages}} @endif>&nbsp;&nbsp; View/Edit Access &nbsp;&nbsp;&nbsp;&nbsp;
+                            <input type="checkbox" name="cms_pages['full']" value="1" @if(isset($fullCMSPages)) {{$fullCMSPages}} @endif>&nbsp;&nbsp; Full Access &nbsp;&nbsp;&nbsp;&nbsp;
                         </div>
                       </div>
                       <!-- /.card-body -->

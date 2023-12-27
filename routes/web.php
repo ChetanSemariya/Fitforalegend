@@ -44,11 +44,13 @@ Route::prefix('/admin')->namespace('App\Http\Controllers\Admin')->group(function
         Route::post('update-cms-pages-status', [CmsController::class, 'update']);
         Route::match(['get','post'], '/add-edit-cms-page/{id?}', [CmsController::class, 'edit']);
         Route::get('delete-cms-page/{id}', [CmsController::class, 'destroy']);
-
+        
         // Categories
-        Route::match(['get', 'post'], '/categories', [CategoryController::class, 'index'])->name('admin.categories');
-        Route::match(['get', 'post'], '/addcategories', [CategoryController::class, 'addCategory'])->name('admin.categories.add');
-
+        Route::get('categories', [CategoryController::class, 'categories']);
+        Route::post('update-category-status', [CategoryController::class, 'updateCategoryStatus']);
+        Route::get('delete-category/{id}', [CategoryController::class, 'deleteCategory']);
+        Route::match(['get','post'], '/add-edit-category/{id?}', [CategoryController::class, 'addEditCategory']);
+    
     });
 });
 

@@ -4,9 +4,11 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\CmsPage;
+use App\Models\AdminsRole;
 use Illuminate\Http\Request;
 use Validator;
 use Session;
+use Auth;
 
 class CmsController extends Controller
 {
@@ -18,36 +20,24 @@ class CmsController extends Controller
         Session::put('page', 'cms-pages');
         $CmsPages = CmsPage::get()->toArray();
         // dd($CmsPages);
-        return view('admin.pages.cms_pages')->with(compact('CmsPages'));
+
+        // Set Admin/Subadmin Permission for CMS Pages
+        $cmspagesModuleCount = AdminsRole::where(['subadmin_id' => Auth::guard('admin')->user()->id, 'module' => 'cms_pages'])->count();
+        $pagesModule = [];
+        if(Auth::guard('admin')->user()->type == 'admin'){
+            $pagesModule['view_access']  = 1;
+            $pagesModule['edit_access']  = 1;
+            $pagesModule['full_access']  = 1;
+        }else if($cmspagesModuleCount ==0){
+            $message = "This feature is restricted for you!";
+            return redirect('admin/dashboard')->with('error_message', $message);
+        }else{
+            $pagesModule = AdminsRole::where(['subadmin_id' => Auth::guard('admin')->user()->id, 'module' => 'cms_pages'])->first()->toArray();
+        }
+        return view('admin.pages.cms_pages')->with(compact('CmsPages', 'pagesModule'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
-    {
-        //
-    }
-
-    /**
-     * Display the specified resource.
-     */
-    public function show(CmsPage $cmsPage)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
+    // edit cms pages
     public function edit(Request $request, $id="")
     {
         // if($request->isMethod('post')){

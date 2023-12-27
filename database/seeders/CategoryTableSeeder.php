@@ -14,10 +14,13 @@ class CategoryTableSeeder extends Seeder
     public function run(): void
     {
         $categoryRecords = [
-            ['id'=>1, 'category_name'=>'clothing', 'category_image'=>'', 'status'=>'Active'],
-            ['id'=>2, 'category_name'=>'Appliances', 'category_image'=>'', 'status'=>'Active'],
-            ['id'=>3, 'category_name'=>'Electronics', 'category_image'=>'', 'status'=>'Active'],
-            ['id'=>4, 'category_name'=>'Accessories', 'category_image'=>'', 'status'=>'Active'],
+            ['id'=>1, 'parent_id'=>0, 'category_name'=>'Clothing', 'category_image'=>'', 'category_discount'=>0, 'description'=>'', 'url' =>'clothing','meta_title'=>'','meta_description' => '', 'meta_keywords'=>'', 'status'=>1],
+            ['id'=>2, 'parent_id'=>0, 'category_name'=>'Electronics', 'category_image'=>'', 'category_discount'=>0, 'description'=>'', 'url' =>'electronics','meta_title'=>'','meta_description' => '', 'meta_keywords'=>'', 'status'=>1],
+            ['id'=>3, 'parent_id'=>0, 'category_name'=>'Appliances', 'category_image'=>'', 'category_discount'=>0, 'description'=>'', 'url' =>'appliances','meta_title'=>'','meta_description' => '', 'meta_keywords'=>'', 'status'=>1],
+            ['id'=>4, 'parent_id'=>1, 'category_name'=>'Men', 'category_image'=>'', 'category_discount'=>0, 'description'=>'', 'url' =>'men','meta_title'=>'','meta_description' => '', 'meta_keywords'=>'', 'status'=>1],
+            ['id'=>5, 'parent_id'=>1, 'category_name'=>'Women', 'category_image'=>'', 'category_discount'=>0, 'description'=>'', 'url' =>'women','meta_title'=>'','meta_description' => '', 'meta_keywords'=>'', 'status'=>1],
+            ['id'=>6, 'parent_id'=>1, 'category_name'=>'Kids', 'category_image'=>'', 'category_discount'=>0, 'description'=>'', 'url' =>'kids','meta_title'=>'','meta_description' => '', 'meta_keywords'=>'', 'status'=>1],
+           
         ];
 
         Category::insert($categoryRecords);
