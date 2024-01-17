@@ -34,10 +34,12 @@
           </div>  
         @endif
           <div class="card">
+            @if($categoriesModule['edit_access'] ==1 || $categoriesModule['full_access'] ==1)
             <div class="card-header">
               <h3 class="card-title">Categories</h3>
               <a style="max-width:150px; float:right; display:inline-block;" class="btn btn-block btn-primary" href="{{ url('admin/add-edit-category')}}">Add Categories</a>
             </div>
+            @endif
             <!-- /.card-header -->
             <div class="card-body">
               <table id="categories" class="table table-bordered table-striped">
@@ -64,6 +66,7 @@
                   <td>{{ $category['url']}}</td>
                   <td>{{ date("F j, Y, g:i a", strtotime($category['created_at']));}}</td>
                   <td>
+                    @if($categoriesModule['edit_access'] ==1 || $categoriesModule['full_access'] ==1) 
                       @if($category['status'] ==1)
                       <a class="updateCategoryStatus" id="category-{{ $category['id']}}" category_id="{{ $category['id'] }}" href="javascript:;void(0)" style='color:#3f6ed3'><i class="fas fa-toggle-on" status="Active"></i>
                       </a>
@@ -72,8 +75,13 @@
                       </a>
                       @endif
                       &nbsp;&nbsp;
-                    {{-- <a href="{{ url('admin/add-edit-cms-Category/'.$category['id'])}}"><i class="fas fa-edit"  style='color:#3f6ed3'></i></a>&nbsp;&nbsp; --}}
-                     <a class="confirmDelete" href="javascript:void(0)" record="category" recordid="{{ $category['id'] }}" title="Delete Category"><i class="fas fa-trash" style='color:#3f6ed3'></i></a>
+                    @endif
+                    @if($categoriesModule['edit_access'] ==1 || $categoriesModule['full_access'] ==1) 
+                      <a href="{{ url('admin/add-edit-category/'.$category['id'])}}"><i class="fas fa-edit"  style='color:#3f6ed3'></i></a>&nbsp;&nbsp;
+                    @endif
+                    @if($categoriesModule['full_access'] == 1)
+                      <a class="confirmDelete" href="javascript:void(0)" record="category" recordid="{{ $category['id'] }}" title="Delete Category"><i class="fas fa-trash" style='color:#3f6ed3'></i></a>
+                    @endif
                 </td>
                 </tr>
                 @endforeach
