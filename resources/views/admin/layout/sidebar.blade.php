@@ -141,6 +141,24 @@
                   <p>Products</p>
                 </a>
               </li>
+              <li class="nav-item">
+                <a href="{{ url('admin/states')}}" class="nav-link {{ $active}}">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>States</p>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="{{ url('admin/cities')}}" class="nav-link {{ $active}}">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Cities</p>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="{{ url('admin/address')}}" class="nav-link {{ $active}}">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Address</p>
+                </a>
+              </li>
             </ul>
           </li>
           {{-- <li class="nav-item">

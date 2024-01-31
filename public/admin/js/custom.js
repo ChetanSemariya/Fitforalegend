@@ -71,6 +71,31 @@ $(document).ready(function(){
         });
     });
 
+    // Update Product Status
+    $(document).on("click", ".updateproductStatus", function(){
+        // here i is the children of link tag a and active-inactive status is our attribute
+        var status = $(this).children("i").attr("status");
+        var product_id = $(this).attr("product_id");
+        // alert(category_id);
+        $.ajax({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            },
+            type:'post',
+            url : '/admin/update-product-status',
+            data:{status:status, product_id:product_id},
+            success:function(resp){
+                if(resp['status'] ==0){
+                    $("#product-"+product_id).html("<i class='fas fa-toggle-off' style='color:grey' status='Inactive'></i>")
+                }else if(resp['status'] ==1){
+                    $("#product-"+product_id).html("<i class='fas fa-toggle-on' style='color:#3f6ed3' status='Active'></i>");
+                }
+            },error:function(){
+                alert('Error');
+            }
+        });
+    });
+
     // Update Subadmin Status
     $(document).on("click", ".updateSubadminStatus", function(){
         // here i is the children of link tag a and active-inactive status is our attribute
