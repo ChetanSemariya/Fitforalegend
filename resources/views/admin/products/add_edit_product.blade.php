@@ -56,13 +56,13 @@
                               <select name="category_id" class="form-control">
                                 <option value="">Select</option>
                                 @foreach($getCategories as $cat)
-                                   <option value="{{ $cat['id'] }}">{{ $cat['category_name'] }}</option>
+                                   <option @if(!empty(@old('category_id')) && $cat['id']== @old('category_id')) selected="" @endif value="{{ $cat['id'] }}">{{ $cat['category_name'] }}</option>
                                    @if(!empty($cat['subcategories']))
                                      @foreach($cat['subcategories'] as $subcat)
-                                        <option value="{{ $subcat['id'] }}">&nbsp;&nbsp;&nbsp;&nbsp;&raquo;{{ $subcat['category_name']}}</option>
+                                        <option @if(!empty(@old('category_id')) && $subcat['id']== @old('category_id')) selected="" @endif  value="{{ $subcat['id'] }}">&nbsp;&nbsp;&nbsp;&nbsp;&raquo;{{ $subcat['category_name']}}</option>
                                         @if(!empty($subcat['subcategories']))
                                            @foreach($subcat['subcategories'] as $subsubcat)
-                                              <option value="{{ $subsubcat['id'] }}">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&raquo;{{ $subsubcat['category_name']}} </option>
+                                              <option @if(!empty(@old('category_id')) && $subsubcat['id']== @old('category_id')) selected="" @endif value="{{ $subsubcat['id'] }}">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&raquo;{{ $subsubcat['category_name']}} </option>
                                            @endforeach
                                         @endif
                                      @endforeach
@@ -71,20 +71,20 @@
                               </select>
                           </div>
                           <div class="form-group">
-                            <label for="product_name">Product Name</label>
-                            <input type="text" name="product_name" id="product_name"  class="form-control" placeholder="Enter Product Name">
+                            <label for="product_name">Product Name*</label>
+                            <input type="text" name="product_name" id="product_name"  class="form-control" placeholder="Enter Product Name"  value="{{ @old('product_name')}}">
                           </div>
                           <div class="form-group">
-                            <label for="product_code">Product Code</label>
-                            <input type="text" name="product_code" id="product_code"  class="form-control" placeholder="Enter Product Code">
+                            <label for="product_code">Product Code*</label>
+                            <input type="text" name="product_code" id="product_code"  class="form-control" value="{{ old('product_code')}}" placeholder="Enter Product Code">
                           </div>
                           <div class="form-group">
-                            <label for="product_color">Product Color</label>
-                            <input type="text" name="product_color" id="product_color"  class="form-control" placeholder="Enter Product Color">
+                            <label for="product_color">Product Color*</label>
+                            <input type="text" name="product_color" id="product_color"  class="form-control" value="{{ old('product_color')}}" placeholder="Enter Product Color">
                           </div>
                           <div class="form-group">
-                            <label for="family_color">Family Color</label>
-                            <select class="form-control" name="family_color">
+                            <label for="family_color">Family Color*</label>
+                            <select class="form-control" value="{{ old('family_color')}}" name="family_color">
                                 <option value="">Select</option>
                                 <option value="Red">Red</option>
                                 <option value="Green">Green</option>
@@ -100,23 +100,68 @@
                           </div>
                           <div class="form-group">
                             <label for="group_code">Group Code</label>
-                            <input type="text" name="group_code" id="group_code"  class="form-control" placeholder="Enter Group Code">
+                            <input type="text" name="group_code" id="group_code" value="{{ old('group_code')}}"  class="form-control" placeholder="Enter Group Code">
                           </div>
                           <div class="form-group">
-                            <label for="product_price">Product Price</label>
-                            <input type="text" name="product_price" id="product_price"  class="form-control" placeholder="Enter Product Price">
+                            <label for="product_price">Product Price*</label>
+                            <input type="text" value="{{ old('product_price')}}" name="product_price" id="product_price"  class="form-control" placeholder="Enter Product Price">
                           </div>
                           <div class="form-group">
                             <label for="product_discount">Product Discount (%)</label>
-                            <input type="text" name="product_discount" id="product_discount"  class="form-control" placeholder="Enter Product Discount (%)">
+                            <input type="text" name="product_discount" id="product_discount"  class="form-control" value="{{ old('product_discount')}}" placeholder="Enter Product Discount (%)">
                           </div>
                           <div class="form-group">
                             <label for="product_weight">Product Weight</label>
-                            <input type="text" name="product_weight" id="product_weight"  class="form-control" placeholder="Enter Product Weight">
+                            <input type="text" value="{{ old('product_weight')}}" name="product_weight" id="product_weight"  class="form-control" placeholder="Enter Product Weight">
                           </div>
                           <div class="form-group">
                             <label for="product_image">product Video</label>
                             <input type="file" name="product_video" id="product_video" class="form-control">
+                          </div>
+                          <div class="form-group">
+                            <label for="fabric">Fabric</label>
+                            <select class="form-control" name="fabric">
+                                <option value="">Select</option>
+                                @foreach($productsFilters['fabricArray'] as $fabric)
+                                  <option value="{{ $fabric }}">{{ $fabric }}</option>
+                                @endforeach
+                            </select>
+                          </div>
+                          <div class="form-group">
+                            <label for="sleeve">Sleeve</label>
+                            <select class="form-control" name="sleeve">
+                                <option value="">Select</option>
+                                @foreach($productsFilters['sleeveArray'] as $sleeve)
+                                  <option value="{{ $sleeve }}">{{ $sleeve }}</option>
+                                @endforeach
+                            </select>
+                          </div>
+                          <div class="form-group">
+                            <label for="pattern">Pattern</label>
+                            <select class="form-control" name="pattern">
+                                <option value="">Select</option>
+                                @foreach($productsFilters['patternArray'] as $pattern)
+                                  <option value="{{ $pattern }}">{{ $pattern }}</option>
+                                @endforeach
+                            </select>
+                          </div>
+                          <div class="form-group">
+                            <label for="fit">Fit</label>
+                            <select class="form-control" name="fit">
+                                <option value="">Select</option>
+                                @foreach($productsFilters['fitArray'] as $fit)
+                                  <option value="{{ $fit }}">{{ $fit }}</option>
+                                @endforeach
+                            </select>
+                          </div>
+                          <div class="form-group">
+                            <label for="occasion">Occasion</label>
+                            <select class="form-control" name="occasion">
+                                <option value="">Select</option>
+                                @foreach($productsFilters['occasionArray'] as $occasion)
+                                  <option value="{{ $occasion }}">{{ $occasion }}</option>
+                                @endforeach
+                            </select>
                           </div>
                           <div class="form-group">
                               <label for="description">Description</label>
