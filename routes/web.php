@@ -6,9 +6,7 @@ use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\ProductsController;
 use App\Http\Controllers\Admin\CmsController;
 use App\Http\Controllers\front\DashboardController;
-use App\Http\Controllers\Admin\StateController;
-use App\Http\Controllers\Admin\CityController;
-use App\Http\Controllers\Admin\AddressController;
+use App\Http\Controllers\Admin\BrandController;
 
 /*
 |--------------------------------------------------------------------------
@@ -61,25 +59,22 @@ Route::prefix('/admin')->namespace('App\Http\Controllers\Admin')->group(function
         Route::post('update-product-status', [ProductsController::class, 'updateProductStatus']);
         Route::get('delete-product/{id}', [ProductsController::class, 'deleteProduct']);
         Route::match(['get','post'], 'add-edit-product/{id?}', [ProductsController::class, 'addEditProduct']);
+        
+        // product images 
+        Route::get('delete-product-image/{id}', [ProductsController::class, 'deleteProductImage']);
+        
+        // product video
+        Route::get('delete-product-video/{id}', [ProductsController::class, 'deleteProductVideo']);
 
-        // states
-        Route::get('states', [StateController::class, 'index']);
-        Route::match(['get','post'], 'states/add', [StateController::class, 'addStates']);
-        Route::match(['get','post'], 'states/edit/{id}', [StateController::class, 'editStates']);
-        Route::get('/delete-state/{id}', [StateController::class, 'deleteState']);
+        // Product Attributes
+        Route::post('update-attribute-status', [ProductsController::class, 'updateAttributeStatus']);
+        Route::get('delete-attribute/{id}', [ProductsController::class, 'deleteAttribute']);
 
-        // city
-        Route::get('cities', [CityController::class, 'index']);
-        Route::match(['get','post'], 'cities/add', [CityController::class, 'addCity']);
-        Route::match(['get','post'], 'cities/edit/{id}', [CityController::class, 'editCity']);
-        Route::get('/delete-cities/{id}', [CityController::class, 'deleteCity']);
+        // brand
+        Route::get('brands', [BrandController::class, 'brands']);
+        Route::post('update-brand-status', [BrandController::class, 'updateBrandStatus']);
+        Route::get('delete-brand/{id}', [BrandController::class, 'deleteBrand']);
 
-        // Address
-        Route::get('address', [AddressController::class, 'index']);
-        Route::match(['get','post'], 'address/add', [AddressController::class, 'addAddress']);
-        Route::match(['get','post'], 'address/edit/{id}', [AddressController::class, 'editAddress']);
-        Route::get('/delete-address/{id}', [AddressController::class, 'deleteAddress']);
-    
     });
 });
 

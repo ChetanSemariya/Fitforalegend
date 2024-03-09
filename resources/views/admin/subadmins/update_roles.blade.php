@@ -94,6 +94,23 @@
                               @php $fullCategories = "" @endphp
                            @endif
                         @endif
+                        @if($role['module'] =="products")
+                           @if($role['view_access'] == 1)
+                              @php $viewProducts = "checked" @endphp
+                              @else
+                              @php $viewProducts = "" @endphp
+                           @endif
+                           @if($role['edit_access'] == 1)
+                              @php $editProducts = "checked" @endphp
+                              @else
+                              @php $editProducts = "" @endphp
+                           @endif
+                           @if($role['full_access'] == 1)
+                              @php $fullProducts = "checked" @endphp
+                              @else
+                              @php $fullProducts = "" @endphp
+                           @endif
+                        @endif
                       @endforeach
                       @endif
                       <div class="card-body">
@@ -108,6 +125,12 @@
                             <input type="checkbox" name="categories['view']" value="1" @if(isset($viewCategories)) {{$viewCategories}} @endif>&nbsp;&nbsp; View Access &nbsp;&nbsp;&nbsp;&nbsp;
                             <input type="checkbox" name="categories['edit']" value="1" @if(isset($editCategories)) {{$editCategories}} @endif>&nbsp;&nbsp; View/Edit Access &nbsp;&nbsp;&nbsp;&nbsp;
                             <input type="checkbox" name="categories['full']" value="1" @if(isset($fullCategories)) {{$fullCategories}} @endif>&nbsp;&nbsp; Full Access &nbsp;&nbsp;&nbsp;&nbsp;
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label for="products">Products: &nbsp;&nbsp;&nbsp;</label>
+                            <input type="checkbox" name="products['view']" value="1" @if(isset($viewProducts)) {{$viewProducts}} @endif>&nbsp;&nbsp; View Access &nbsp;&nbsp;&nbsp;&nbsp;
+                            <input type="checkbox" name="products['edit']" value="1" @if(isset($editProducts)) {{$editProducts}} @endif>&nbsp;&nbsp; View/Edit Access &nbsp;&nbsp;&nbsp;&nbsp;
+                            <input type="checkbox" name="products['full']" value="1" @if(isset($fullProducts)) {{$fullProducts}} @endif>&nbsp;&nbsp; Full Access &nbsp;&nbsp;&nbsp;&nbsp;
                         </div>
                       </div>
                       <!-- /.card-body -->

@@ -90,6 +90,7 @@
     $('#categories').DataTable();
     $('#subadmins').DataTable();
     $('#products').DataTable();
+    $('#brand').DataTable();
 
   });
 </script>

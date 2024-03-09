@@ -247,6 +247,7 @@ class AdminController extends Controller
 
     public function updateRole($id, Request $request)
     {
+        // return $id;
         if($request->isMethod('post')){
             $data = $request->all();
             // echo "<pre>"; print_r($data); die;

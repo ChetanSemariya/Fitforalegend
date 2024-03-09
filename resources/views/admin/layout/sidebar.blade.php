@@ -105,7 +105,7 @@
             </a>
           </li>
 
-          @if(Session::get('page')=="categories" || Session::get('page') =="products")
+          @if(Session::get('page')=="categories" || Session::get('page') =="products" || Session::get('page') == "brands")
             @php $active = "active" @endphp
             @else
             @php $active = "" @endphp
@@ -141,22 +141,15 @@
                   <p>Products</p>
                 </a>
               </li>
+              @if(Session::get('page')=="brands")
+                @php $active="active" @endphp
+                @else 
+                @php $active="" @endphp
+              @endif
               <li class="nav-item">
-                <a href="{{ url('admin/states')}}" class="nav-link {{ $active}}">
+                <a href="{{ url('admin/brands')}}" class="nav-link {{ $active}}">
                   <i class="far fa-circle nav-icon"></i>
-                  <p>States</p>
-                </a>
-              </li>
-              <li class="nav-item">
-                <a href="{{ url('admin/cities')}}" class="nav-link {{ $active}}">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Cities</p>
-                </a>
-              </li>
-              <li class="nav-item">
-                <a href="{{ url('admin/address')}}" class="nav-link {{ $active}}">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Address</p>
+                  <p>Brands</p>
                 </a>
               </li>
             </ul>

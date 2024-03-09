@@ -67,16 +67,22 @@
                   </td>
                   
                   <td>
-                    @if($product['status'] ==1)
-                    <a class="updateproductStatus" id="product-{{ $product['id']}}" product_id="{{ $product['id'] }}" href="javascript:;void(0)" style='color:#3f6ed3'><i class="fas fa-toggle-on" status="Active"></i>
-                    </a>
-                    @else
-                    <a class="updateproductStatus" id="product-{{ $product['id']}}" product_id="{{ $product['id']}}" style="color:gray" href="javascript:;void(0)"><i class="fas fa-toggle-off" status="Inactive"></i>
-                    </a>
+                    @if($productsModule['edit_access'] ==1 || $productsModule['full_access'] ==1) 
+                      @if($product['status'] ==1)
+                      <a class="updateproductStatus" id="product-{{ $product['id']}}" product_id="{{ $product['id'] }}" href="javascript:;void(0)" style='color:#3f6ed3'><i class="fas fa-toggle-on" status="Active"></i>
+                      </a>
+                      @else
+                      <a class="updateproductStatus" id="product-{{ $product['id']}}" product_id="{{ $product['id']}}" style="color:gray" href="javascript:;void(0)"><i class="fas fa-toggle-off" status="Inactive"></i>
+                      </a>
+                      @endif
+                      &nbsp;&nbsp;
                     @endif
-                    &nbsp;&nbsp;
+                    @if($productsModule['edit_access'] ==1 || $productsModule['full_access'] ==1) 
                     <a href="{{ url('admin/add-edit-product/'.$product['id'])}}"><i class="fas fa-edit"  style='color:#3f6ed3'></i></a>&nbsp;&nbsp;
+                    @endif
+                    @if($productsModule['full_access'] == 1)
                     <a class="confirmDelete" href="javascript:void(0)" record="product" recordid="{{ $product['id'] }}" title="Delete product"><i class="fas fa-trash" style='color:#3f6ed3'></i></a>
+                    @endif
                 </td>
                 </tr>
                 @endforeach
