@@ -7,12 +7,12 @@
     <div class="container-fluid">
       <div class="row mb-2">
         <div class="col-sm-6">
-          <h1 class="m-0">Brands</h1>
+          <h1 class="m-0">Banners</h1>
         </div><!-- /.col -->
         <div class="col-sm-6">
           <ol class="breadcrumb float-sm-right">
             <li class="breadcrumb-item"><a href="#">Home</a></li>
-            <li class="breadcrumb-item active">Brands</li>
+            <li class="breadcrumb-item active">Banners</li>
           </ol>
         </div><!-- /.col -->
       </div><!-- /.row -->
@@ -34,47 +34,49 @@
           </div>  
         @endif
           <div class="card">
-            @if($brandsModule['edit_access'] ==1 || $brandsModule['full_access'] ==1)
+           @if($bannerModule['edit_access'] ==1 || $bannerModule['full_access'] ==1)
             <div class="card-header">
-              <h3 class="card-title">Brands</h3>
-              <a style="max-width:150px; float:right; display:inline-block;" class="btn btn-block btn-primary" href="{{ url('admin/add-edit-brand')}}">Add Brands</a>
+              <h3 class="card-title">Banners</h3>
+              <a style="max-width:150px; float:right; display:inline-block;" class="btn btn-block btn-primary" href="{{ url('admin/add-edit-banner')}}">Add Banners</a>
             </div>
             @endif
             <!-- /.card-header -->
             <div class="card-body">
-              <table id="brand" class="table table-bordered table-striped">
+              <table id="banners" class="table table-bordered table-striped">
                 <thead>
                 <tr>
                   <th>ID</th>
-                  <th>Name</th>
-                  <th>URL</th>
-                  <th>Created on</th>
+                  <th>Image</th>
+                  <th>Type</th>
+                  <th>Link</th>
+                  <th>Title</th>
                   <th>Actions</th>
                 </tr>
                 </thead>
                 <tbody>
-                @foreach($brands as $brand)
+                @foreach($banners as $banner)
                 <tr>
-                  <td>{{ $brand['id']}}</td>
-                  <td>{{ $brand['brand_name']}}</td>
-                  <td>{{ $brand['url']}}</td>
-                  <td>{{ date("F j, Y, g:i a", strtotime($brand['created_at']));}}</td>
+                  <td>{{ $banner['id']}}</td>
+                  <td><a target="_blank" href="{{ url('front/images/banners/'.$banner['image'])}}"><img class="rounded-circle" src="{{ asset('front/images/banners/'.$banner['image'])}}" width="60px" height="60px"></a></td>
+                  <td>{{ $banner['type']}}</td>
+                  <td>{{ $banner['link']}}</td>
+                  <td>{{ $banner['title']}}</td>
                   <td>
-                    @if($brandsModule['edit_access'] ==1 || $brandsModule['full_access'] ==1) 
-                      @if($brand['status'] ==1)
-                      <a class="updateBrandStatus" id="brand-{{ $brand['id']}}" brand_id="{{ $brand['id'] }}" href="javascript:;void(0)" style='color:#3f6ed3'><i class="fas fa-toggle-on" status="Active"></i>
+                    @if($bannerModule['edit_access'] ==1 || $bannerModule['full_access'] ==1) 
+                      @if($banner['status'] ==1)
+                      <a class="updateBannerStatus" id="banner-{{ $banner['id']}}" banner_id="{{ $banner['id'] }}" href="javascript:;void(0)" style='color:#3f6ed3'><i class="fas fa-toggle-on" status="Active"></i>
                       </a>
                       @else
-                      <a class="updateBrandStatus" id="brand-{{ $brand['id']}}" brand_id="{{ $brand['id']}}" style="color:gray" href="javascript:;void(0)"><i class="fas fa-toggle-off" status="Inactive"></i>
+                      <a class="updateBannerStatus" id="banner-{{ $banner['id']}}" banner_id="{{ $banner['id']}}" style="color:gray" href="javascript:;void(0)"><i class="fas fa-toggle-off" status="Inactive"></i>
                       </a>
                       @endif
                       &nbsp;&nbsp;
                     @endif
-                    @if($brandsModule['edit_access'] ==1 || $brandsModule['full_access'] ==1) 
-                      <a href="{{ url('admin/add-edit-brand/'.$brand['id'])}}" title="Edit Brand"><i class="fas fa-edit"  style='color:#3f6ed3'></i></a>&nbsp;&nbsp;
+                    @if($bannerModule['edit_access'] ==1 || $bannerModule['full_access'] ==1) 
+                      <a href="{{ url('admin/add-edit-banner/'.$banner['id'])}}" title="Edit Banner"><i class="fas fa-edit"  style='color:#3f6ed3'></i></a>&nbsp;&nbsp;
                     @endif
-                    @if($brandsModule['full_access'] == 1)
-                      <a class="confirmDelete" href="javascript:void(0)" record="brand" recordid="{{ $brand['id'] }}" title="Delete Brand"><i class="fas fa-trash" style='color:#3f6ed3'></i></a>
+                    @if($bannerModule['full_access'] == 1)
+                      <a class="confirmDelete" href="javascript:void(0)" record="banner" recordid="{{ $banner['id'] }}" title="Delete Banner"><i class="fas fa-trash" style='color:#3f6ed3'></i></a>
                     @endif
                 </td>
                 </tr>

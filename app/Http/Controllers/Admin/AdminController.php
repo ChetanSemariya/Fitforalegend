@@ -252,6 +252,9 @@ class AdminController extends Controller
             $data = $request->all();
             // echo "<pre>"; print_r($data); die;
 
+            // Delete all earlier roles for subadmins
+            AdminsRole::where('subadmin_id', $id)->delete();
+
             // make dynamic roles with help of foreach 
             foreach($data as $key => $value){
                 if(isset($value['view'])){
@@ -270,10 +273,11 @@ class AdminController extends Controller
                 }else{
                     $full = 0;
                 }
+
+                AdminsRole::where('subadmin_id',$id)->insert(['subadmin_id'=> $id, 'module'=>$key,'view_access'=>$view,'edit_access'=>$edit,'full_access'=>$full]);
             }
 
-            // Delete all earlier roles for subadmins
-            AdminsRole::where('subadmin_id', $id)->delete();
+           
 
             // Add new roles for subadmin
             // if(isset($data['cms_pages']['view'])){
@@ -294,15 +298,15 @@ class AdminController extends Controller
             //     $cms_pages_full = 0;
             // }
 
-            $role = new AdminsRole;
-            $role->subadmin_id = $id;
-            $role->module = $key;
-            $role->view_access = $view;
-            // return $role;
-            $role->edit_access = $edit;
-            $role->full_access = $full;
-            // echo "<pre>"; print_r($role->toArray()); die;
-            $role->save();
+            // $role = new AdminsRole;
+            // $role->subadmin_id = $id;
+            // $role->module = $key;
+            // $role->view_access = $view;
+            // // return $role;
+            // $role->edit_access = $edit;
+            // $role->full_access = $full;
+            // // echo "<pre>"; print_r($role->toArray()); die;
+            // $role->save();
 
             $message = "Subadmin Roles Updated Successfully!";
             return redirect()->back()->with('success_message', $message);

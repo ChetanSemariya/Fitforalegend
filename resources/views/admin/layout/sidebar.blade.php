@@ -42,16 +42,16 @@
           </li>
           @if(Auth::guard('admin')->user()->type=="admin")
 
-            @if(Session::get('page') == "update-password" || Session::get('page')=="update-details")
+            @if(Session::get('page') == "update-password" || Session::get('page')=="update-details" || Session::get('page') == "subadmins")
             @php $active="active" @endphp
             @else 
             @php $active="" @endphp
             @endif
-            <li class="nav-item menu-open">
+            <li class="nav-item">
               <a href="{{ url('admin/dashboard')}}" class="nav-link {{ $active}}">
-                <i class="nav-icon fas fa-tachometer-alt"></i>
+                <i class="nav-icon fas fa-users"></i>
                 <p>
-                  Settings
+                  Admin Management
                   <i class="right fas fa-angle-left"></i>
                 </p>
               </a>
@@ -78,43 +78,61 @@
                     <p>Update Admin Details</p>
                   </a>
                 </li>
+                @if(Session::get('page')=="subadmins")
+                  @php $active = "active" @endphp
+                  @else
+                  @php $active = "" @endphp
+                @endif
+                <li class="nav-item">
+                  <a href="{{ url('admin/subadmins')}}" class="nav-link {{ $active}}">
+                    <i class="far fa-circle nav-icon"></i>
+                    Subadmins
+                  </a>
+                </li>
               </ul>
             </li>
-            @if(Session::get('page')=="subadmins")
+          @endif
+
+          {{-- Pages Managemet --}}
+          @if(Session::get('page') == "cms-pages")
+          @php $active="active" @endphp
+          @else 
+          @php $active="" @endphp
+          @endif
+          <li class="nav-item">
+            <a href="{{ url('admin/dashboard')}}" class="nav-link {{ $active}}">
+              <i class="nav-icon fas fa-file"></i>
+              <p>
+                Pages Management
+                <i class="right fas fa-angle-left"></i>
+              </p>
+            </a>
+            <ul class="nav nav-treeview">
+              @if(Session::get('page')=="cms-pages")
               @php $active = "active" @endphp
               @else
               @php $active = "" @endphp
-            @endif
-            <li class="nav-item">
-              <a href="{{ url('admin/subadmins')}}" class="nav-link {{ $active}}">
-                <i class="nav-icon fas fa-users"></i>
-                Subadmins
-              </a>
-            </li>
-          @endif
-
-          @if(Session::get('page')=="cms-pages")
-          @php $active = "active" @endphp
-          @else
-          @php $active = "" @endphp
-          @endif
-          <li class="nav-item">
-            <a href="{{ url('admin/cms-pages')}}" class="nav-link {{ $active}}">
-              <i class="nav-icon fas fa-copy"></i>
-              CMS Pages
-            </a>
+              @endif
+              <li class="nav-item">
+                <a href="{{ url('admin/cms-pages')}}" class="nav-link {{ $active}}">
+                  <i class="nav-icon fas fa-copy"></i>
+                  CMS Pages
+                </a>
+              </li>
+            </ul>
           </li>
 
-          @if(Session::get('page')=="categories" || Session::get('page') =="products" || Session::get('page') == "brands")
+          {{-- Catalogue Management --}}
+          @if(Session::get('page')=="categories" || Session::get('page') =="products" || Session::get('page') == "brands" || Session::get('page') == 'banners')
             @php $active = "active" @endphp
             @else
             @php $active = "" @endphp
           @endif
-          <li class="nav-item menu-open">
+          <li class="nav-item">
             <a href="#" class="nav-link {{ $active}}">
               <i class="nav-icon fas fa-th"></i>
               <p>
-                Catalogue
+                Catalogue Management
                 <i class="right fas fa-angle-left"></i>
               </p>
             </a>
@@ -152,67 +170,48 @@
                   <p>Brands</p>
                 </a>
               </li>
+              @if(Session::get('page')=="banners")
+                @php $active="active" @endphp
+                @else 
+                @php $active="" @endphp
+              @endif
+              <li class="nav-item">
+                <a href="{{ url('admin/banners')}}" class="nav-link {{ $active}}">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Banners</p>
+                </a>
+              </li>
             </ul>
           </li>
-          {{-- <li class="nav-item">
-            <a href="{{ url('admin/cms-pages')}}" class="nav-link">
-              <i class="nav-icon fas fa-copy"></i>
+
+          {{-- Banners Management --}}
+          @if(Session::get('page') == 'banners')
+            @php $active = "active" @endphp
+            @else
+            @php $active = "" @endphp
+          @endif
+          <li class="nav-item menu-open">
+            <a href="#" class="nav-link {{ $active}}">
+              <i class="nav-icon fas fa-image"></i>
               <p>
-                CMS Pages
-              
+                Banners Management
+                <i class="right fas fa-angle-left"></i>
               </p>
             </a>
             <ul class="nav nav-treeview">
+              @if(Session::get('page')=="banners")
+                @php $active="active" @endphp
+                @else 
+                @php $active="" @endphp
+              @endif
               <li class="nav-item">
-                <a href="pages/layout/top-nav.html" class="nav-link">
+                <a href="{{ url('admin/banners')}}" class="nav-link {{ $active}}">
                   <i class="far fa-circle nav-icon"></i>
-                  <p>Top Navigation</p>
-                </a>
-              </li>
-              <li class="nav-item">
-                <a href="pages/layout/top-nav-sidebar.html" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Top Navigation + Sidebar</p>
-                </a>
-              </li>
-              <li class="nav-item">
-                <a href="pages/layout/boxed.html" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Boxed</p>
-                </a>
-              </li>
-              <li class="nav-item">
-                <a href="pages/layout/fixed-sidebar.html" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Fixed Sidebar</p>
-                </a>
-              </li>
-              <li class="nav-item">
-                <a href="pages/layout/fixed-sidebar-custom.html" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Fixed Sidebar <small>+ Custom Area</small></p>
-                </a>
-              </li>
-              <li class="nav-item">
-                <a href="pages/layout/fixed-topnav.html" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Fixed Navbar</p>
-                </a>
-              </li>
-              <li class="nav-item">
-                <a href="pages/layout/fixed-footer.html" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Fixed Footer</p>
-                </a>
-              </li>
-              <li class="nav-item">
-                <a href="pages/layout/collapsed-sidebar.html" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Collapsed Sidebar</p>
+                  <p>Banners</p>
                 </a>
               </li>
             </ul>
-          </li> --}}
+          </li>
         </ul>
       </nav>
       <!-- /.sidebar-menu -->

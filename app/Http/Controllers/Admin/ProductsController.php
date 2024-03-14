@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 use App\Models\Product;
 use App\Models\Category;
 use App\Models\ProductsImage;
-use App\Models\{ProductsAttribute, AdminsRole};
+use App\Models\{ProductsAttribute, AdminsRole, Brand};
 use Image;
 use Session;
 use Auth;
@@ -86,9 +86,11 @@ class ProductsController extends Controller
             }
 
             // edit product attributes
-            foreach($data['attributeId'] as $akey => $attribute){
-                if(!empty($attribute)){
-                    ProductsAttribute::where(['id'=>$data['attributeId'][$akey]])->update(['price'=>$data['price'][$akey], 'stock'=>$data['stock'][$akey]]);
+            if(isset($data['attributeId'])){
+                foreach($data['attributeId'] as $akey => $attribute){
+                    if(!empty($attribute)){
+                        ProductsAttribute::where(['id'=>$data['attributeId'][$akey]])->update(['price'=>$data['price'][$akey], 'stock'=>$data['stock'][$akey]]);
+                    }
                 }
             }
 
@@ -139,6 +141,7 @@ class ProductsController extends Controller
             }
 
             $product->category_id      = $data['category_id'];
+            $product->brand_id         = $data['brand_id'];
             $product->product_name     = $data['product_name'];
             $product->product_code     = $data['product_code'];
             $product->product_color    = $data['product_color'];
@@ -236,9 +239,12 @@ class ProductsController extends Controller
         // get categories and their subcategories
         $getCategories = Category::getCategories();
 
+        // get brands
+        $getBrands = Brand::where('status',1)->get()->toArray();
+
         // product filters
         $productsFilters = Product::productsFilters();
-        return view('admin.products.add_edit_product')->with(compact('title','getCategories','productsFilters', 'product'));
+        return view('admin.products.add_edit_product')->with(compact('title','getCategories','productsFilters', 'product','getBrands'));
     }
 
     // update product status

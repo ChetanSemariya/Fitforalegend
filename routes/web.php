@@ -7,6 +7,7 @@ use App\Http\Controllers\Admin\ProductsController;
 use App\Http\Controllers\Admin\CmsController;
 use App\Http\Controllers\front\DashboardController;
 use App\Http\Controllers\Admin\BrandController;
+use App\Http\Controllers\Admin\BannersController;
 
 /*
 |--------------------------------------------------------------------------
@@ -74,6 +75,15 @@ Route::prefix('/admin')->namespace('App\Http\Controllers\Admin')->group(function
         Route::get('brands', [BrandController::class, 'brands']);
         Route::post('update-brand-status', [BrandController::class, 'updateBrandStatus']);
         Route::get('delete-brand/{id}', [BrandController::class, 'deleteBrand']);
+        Route::match(['get','post'], 'add-edit-brand/{id?}', [BrandController::class, 'addEditBrand']);
+        Route::get('delete-brand-image/{id}', [BrandController::class, 'deleteBrandImage']);
+        Route::get('delete-brand-logo/{id}', [BrandController::class, 'deleteBrandLogo']);
+        
+        // banners
+        Route::get('banners',[BannersController::class, 'banners']);
+        Route::match(['get','post'], 'add-edit-banner/{id?}', [BannersController::class, 'addEditBanner']);
+        Route::post('update-banner-status', [BannersController::class, 'updateBannerStatus']);
+        Route::get('delete-banner/{id}', [BannersController::class, 'deleteBanner']);
 
     });
 });

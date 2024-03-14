@@ -91,6 +91,7 @@
     $('#subadmins').DataTable();
     $('#products').DataTable();
     $('#brand').DataTable();
+    $('#banners').DataTable();
 
   });
 </script>
